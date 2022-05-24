@@ -1,0 +1,23 @@
+{
+  "name": "learn-english",
+  "version": "1.0.0",
+  "description": "1. vocabolary\r 2. api that serve word/words \r 3. api action can have count quesystring param between 1 to 50",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShlomoRussell/learn-english.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ShlomoRussell/learn-english/issues"
+  },
+  "homepage": "https://github.com/ShlomoRussell/learn-english#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
