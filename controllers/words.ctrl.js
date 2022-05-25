@@ -9,23 +9,21 @@ const hebWords = fs.readFileSync("./nouns-50-he.txt", "utf-8").split(os.EOL);
 
 wordCtrl.get("/", function (req, res) {
   const randomWord = () => {
-    const word =
-      englishWords[Math.floor(Math.random() * englishWords.length)];
+    const word = englishWords[Math.floor(Math.random() * englishWords.length)];
     if (!!word) return word;
     randomWord();
   };
   if (req.query.count) {
     const randomWordList = [];
-    var i = 0;
     while (randomWordList.length < req.query.count) {
       randomWordList.push(randomWord());
-      if (randomWordList.filter((w) => w == randomWordList[i]).length > 1||!randomWordList[i]) {
-        i--;
+      if (
+        randomWordList.filter((w) => w == randomWordList[randomWordList.length-1]).length > 1 ||
+        !randomWordList[randomWordList.length-1]
+      ) {
         randomWordList.pop();
         continue;
       }
-
-      i++;
     }
     console.log(randomWordList);
     res.send(randomWordList);
