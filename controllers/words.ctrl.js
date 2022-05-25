@@ -8,13 +8,24 @@ const englishWords = fs.readFileSync("./nouns-50.txt", "utf-8").split(os.EOL);
 const hebWords = fs.readFileSync("./nouns-50-he.txt", "utf-8").split(os.EOL);
 
 wordCtrl.get("/", function (req, res) {
-  const randomWord = () =>
-    englishWords[Math.floor(Math.random() * englishWords.length)];
+  const randomWord = () => {
+    const word = englishWords[Math.floor(Math.random() * englishWords.length)];
+    if (!!word) return word;
+    randomWord();
+  };
   if (req.query.count) {
     const randomWordList = [];
-    for (let i = 0; i < req.query.count; i++) {
+    while (randomWordList.length < req.query.count) {
       randomWordList.push(randomWord());
+      if (
+        randomWordList.filter((w) => w == randomWordList[randomWordList.length-1]).length > 1 ||
+        !randomWordList[randomWordList.length-1]
+      ) {
+        randomWordList.pop();
+        continue;
+      }
     }
+    console.log(randomWordList);
     res.send(randomWordList);
   } else {
     res.send([randomWord()]);
@@ -24,7 +35,7 @@ wordCtrl.get("/", function (req, res) {
 wordCtrl.post("/", function (req, res) {
   const engIndex = englishWords.findIndex((w) => w == req.body["englishWord"]);
   const hebIndex = hebWords.findIndex((w) => w === req.body["hebrewWord"]);
-  let isCorrect=false;
+  let isCorrect = false;
   if (engIndex === hebIndex) {
     isCorrect = true;
   }
