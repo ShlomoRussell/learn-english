@@ -6,6 +6,7 @@ const dal = require("../DAL");
 const wordCtrl = express.Router();
 const englishWords = fs.readFileSync("./nouns-50.txt", "utf-8").split(os.EOL);
 const hebWords = fs.readFileSync("./nouns-50-he.txt", "utf-8").split(os.EOL);
+const USER_ID = '1';
 
 wordCtrl.get("/", function (req, res) {
   const randomWord = () => {
@@ -45,8 +46,8 @@ wordCtrl.post("/", function (req, res) {
       correctCounter: isCorrect ? 1 : 0,
       wrongCounter: !isCorrect ? 1 : 0,
     },
-    "1"
+   USER_ID
   );
-  res.send(req.body);
+  res.send(isCorrect);
 });
-module.exports = wordCtrl;
+module.exports = {wordCtrl,USER_ID};
