@@ -10,7 +10,7 @@ const hebWords = fs.readFileSync("./nouns-50-he.txt", "utf-8").split(os.EOL);
 wordCtrl.get("/", function (req, res) {
   const randomWord = () => {
     const word =
-      englishWords[Math.floor(Math.random() * englishWords.length - 1)];
+      englishWords[Math.floor(Math.random() * englishWords.length)];
     if (!!word) return word;
     randomWord();
   };
@@ -19,7 +19,7 @@ wordCtrl.get("/", function (req, res) {
     var i = 0;
     while (randomWordList.length < req.query.count) {
       randomWordList.push(randomWord());
-      if (randomWordList.filter((w) => w == randomWordList[i]).length > 1) {
+      if (randomWordList.filter((w) => w == randomWordList[i]).length > 1||!randomWordList[i]) {
         i--;
         randomWordList.pop();
         continue;
