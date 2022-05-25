@@ -6,24 +6,28 @@ const dal = require("../DAL");
 const wordCtrl = express.Router();
 const englishWords = fs.readFileSync("./nouns-50.txt", "utf-8").split(os.EOL);
 const hebWords = fs.readFileSync("./nouns-50-he.txt", "utf-8").split(os.EOL);
-console.log(englishWords);
+
 wordCtrl.get("/", function (req, res) {
   const randomWord = () => {
-    const word = englishWords[Math.floor(Math.random() * englishWords.length-1)];
-    if (!!word) return word
-    randomWord()
+    const word =
+      englishWords[Math.floor(Math.random() * englishWords.length - 1)];
+    if (!!word) return word;
+    randomWord();
   };
   if (req.query.count) {
     const randomWordList = [];
     var i = 0;
-    while ( i < req.query.count) {
+    while (randomWordList.length < req.query.count) {
       randomWordList.push(randomWord());
-      if (!randomWordList.find(w => w == randomWordList[i])){
-        i--
-        continue
+      if (randomWordList.filter((w) => w == randomWordList[i]).length > 1) {
+        i--;
+        randomWordList.pop();
+        continue;
       }
-      i++
+
+      i++;
     }
+    console.log(randomWordList);
     res.send(randomWordList);
   } else {
     res.send([randomWord()]);
@@ -33,7 +37,7 @@ wordCtrl.get("/", function (req, res) {
 wordCtrl.post("/", function (req, res) {
   const engIndex = englishWords.findIndex((w) => w == req.body["englishWord"]);
   const hebIndex = hebWords.findIndex((w) => w === req.body["hebrewWord"]);
-  let isCorrect=false;
+  let isCorrect = false;
   if (engIndex === hebIndex) {
     isCorrect = true;
   }
