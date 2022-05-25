@@ -6,14 +6,23 @@ const dal = require("../DAL");
 const wordCtrl = express.Router();
 const englishWords = fs.readFileSync("./nouns-50.txt", "utf-8").split(os.EOL);
 const hebWords = fs.readFileSync("./nouns-50-he.txt", "utf-8").split(os.EOL);
-
+console.log(englishWords);
 wordCtrl.get("/", function (req, res) {
-  const randomWord = () =>
-    englishWords[Math.floor(Math.random() * englishWords.length)];
+  const randomWord = () => {
+    const word = englishWords[Math.floor(Math.random() * englishWords.length-1)];
+    if (!!word) return word
+    randomWord()
+  };
   if (req.query.count) {
     const randomWordList = [];
-    for (let i = 0; i < req.query.count; i++) {
+    var i = 0;
+    while ( i < req.query.count) {
       randomWordList.push(randomWord());
+      if (!randomWordList.find(w => w == randomWordList[i])){
+        i--
+        continue
+      }
+      i++
     }
     res.send(randomWordList);
   } else {
